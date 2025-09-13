@@ -1,0 +1,13 @@
+numpy
+pandas
+tensorflow
+scikit-learn
+opencv-python
+matplotlib
+nltk
+spacy
+streamlit
+streamlit-chat
+pillow
+gTTS
+joblib
