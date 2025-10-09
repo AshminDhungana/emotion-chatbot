@@ -17,9 +17,9 @@ A web-based **Emotion Chatbot** that interacts with users while detecting and re
 ## Tech Stack
 
 - **Frontend:** HTML, CSS, JavaScript  
-- **Backend:** Python (FastAPI / Flask)  
-- **Database:** SQLite / PostgreSQL  
-- **Machine Learning:** PyTorch or Keras  
+- **Backend:** Python (Flask)  
+- **Database:** SQLite   
+- **Machine Learning:**  Tensorflow, Keras  
 - **Model:** GPT-2 Small (~124M parameters) fine-tuned for emotion dialogues  
 
 ---
