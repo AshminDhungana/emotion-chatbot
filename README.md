@@ -1,98 +1,167 @@
 # 🤖 Emotion-Chatbot
 
-A web-based **Emotion Chatbot** that interacts with users while detecting and reflecting emotions in text. Users can either **login** or chat anonymously. The chatbot is powered by a **small language model (~124M parameters)** using PyTorch/Keras, making it fast and lightweight while providing emotion-aware responses.
+A web-based **Emotion Chatbot** that interacts with users while detecting and reflecting emotions in text. Users can either **log in** or chat anonymously. The chatbot runs on a **lightweight GPT-2 (124M)** model, fine-tuned for emotion-aware dialogue.
 
 ---
 
-## Features
+## 🚀 Features
 
-- Chat anonymously or login/register  
-- Emotion-aware responses based on user input  
-- Save chat history for logged-in users  
-- Responsive and interactive frontend  
-- Simple backend API with Python and SQL database  
-
----
-
-## Tech Stack
-
-- **Frontend:** HTML, CSS, JavaScript  
-- **Backend:** Python (Flask)  
-- **Database:** SQLite   
-- **Machine Learning:**  Tensorflow, Keras  
-- **Model:** GPT-2 Small (~124M parameters) fine-tuned for emotion dialogues  
+* 🧠 Emotion-aware text response generation
+* 👤 Login/Register or Anonymous chat
+* 💾 Chat history saved for logged-in users
+* ⚡ Fast REST API using Flask
+* 🌐 Responsive React frontend (SPA)
+* 🧩 SQLite database integration
+* 🪶 Lightweight and easy to deploy
 
 ---
 
-## Folder Structure
+## 🧰 Tech Stack
+
+| Layer                 | Technology                                              |
+| --------------------- | ------------------------------------------------------- |
+| **Frontend**          | React (Vite or Create React App), JavaScript, Bootstrap |
+| **Backend**           | Python (Flask / FastAPI)                                |
+| **Database**          | SQLite                                                  |
+| **ML Model**          | TensorFlow / Keras (GPT-2 Small 124M)                   |
+| **API Communication** | REST (Fetch / Axios)                                    |
+
+---
+
+## 📁 Folder Structure
 
 ```
 emotion-chatbot/
-├── frontend/
-│   ├── index.html
-│   ├── styles.css
-│   └── script.js
-├── backend/
-│   ├── main.py
-│   ├── models.py
-│   ├── database.py
-│   └── config.py
-├── model/
-│   └── gpt2-finetuned/
-├── requirements.txt
-└── README.md
+│
+├── backend/                            # Flask backend
+│   ├── venv/                           # Python virtual environment
+│   ├── app/
+│   │   ├── __init__.py
+│   │   ├── main.py                     # Entry point for backend
+│   │   ├── routes/
+│   │   │   ├── __init__.py
+│   │   │   ├── auth_routes.py          # Login/Register endpoints
+│   │   │   └── chat_routes.py          # Chat API (emotion responses)
+│   │   ├── models/
+│   │   │   ├── __init__.py
+│   │   │   └── user_model.py           # SQLAlchemy model
+│   │   ├── services/
+│   │   │   ├── emotion_model.py        # ML model loader/inference
+│   │   │   └── database.py             # DB connection config
+│   │   └── utils/
+│   │       └── preprocess.py           # Text cleaning utilities
+│   ├── requirements.txt
+│   ├── .env                            # Environment variables (DB_URL, SECRET_KEY)
+│   └── run.py                          # Runs the Flask server
+│
+├── frontend/                           # React frontend (SPA)
+│   ├── public/
+│   ├── src/
+│   │   ├── components/
+│   │   │   ├── Chat.js
+│   │   │   ├── Message.js
+│   │   │   ├── Login.js
+│   │   │   ├── Register.js
+│   │   │   └── Navbar.js
+│   │   ├── context/
+│   │   │   └── AuthContext.js
+│   │   ├── App.js
+│   │   └── index.js
+│   ├── package.json
+│   ├── .env                            # REACT_APP_API_URL=http://localhost:5000
+│   └── README.md
+│
+├── docs/                               # Documentation assets
+│   └── architecture-diagram.png
+│
+├── .gitignore
+├── README.md
+└── LICENSE
 ```
 
 ---
 
-## Installation
+## ⚙️ Setup Instructions
 
-1. **Clone the repository**
+### 🧩 1. Clone the repository
+
 ```bash
 git clone https://github.com/yourusername/emotion-chatbot.git
 cd emotion-chatbot
 ```
 
-2. **Create a virtual environment**
-```bash
-python -m venv venv
-source venv/bin/activate   # Linux/Mac
-venv\Scripts\activate      # Windows
-```
+### 🐍 2. Backend Setup (Python)
 
-3. **Install dependencies**
 ```bash
+cd backend
+python -m venv venv
+source venv/bin/activate        # Linux/Mac
+venv\Scripts\activate           # Windows
+
 pip install -r requirements.txt
 ```
 
-4. **Set up the database**
-- Configure database credentials in `backend/config.py`
-- Create necessary tables for users and chat history
+Set up your `.env` file:
 
-5. **Start the backend server**
-```bash
-uvicorn backend.main:app --reload
+```
+FLASK_ENV=development
+SECRET_KEY=your-secret-key
+DATABASE_URL=sqlite:///chatbot.db
 ```
 
-6. **Open the frontend**
-- Open `frontend/index.html` in a web browser or serve it using a local HTTP server
+Run the backend:
+
+```bash
+python run.py
+```
+
+or (if using FastAPI)
+
+```bash
+uvicorn app.main:app --reload
+```
+
+### ⚛️ 3. Frontend Setup (React)
+
+In another terminal:
+
+```bash
+cd frontend
+npm install
+```
+
+Create a `.env` file:
+
+```
+REACT_APP_API_URL=http://localhost:5000
+```
+
+Run the development server:
+
+```bash
+npm start
+```
+
+The React app will open at **[http://localhost:3000](http://localhost:3000)**
 
 ---
 
-## Usage
+## 💬 Usage
 
-1. Open the chatbot in your browser  
-2. Choose to **login** or **chat anonymously**  
-3. Type your message and get an emotion-aware response from the chatbot  
-4. For logged-in users, chat history is saved and can be accessed later  
+1. Open the frontend in your browser
+2. Log in or start chatting anonymously
+3. The bot detects emotion in your message and responds accordingly
+4. Logged-in users can view past chat sessions
 
 ---
 
-## Model
+## 🧠 Model Details
 
-- Pretrained **GPT-2 Small (~124M parameters)**  
-- Fine-tuned on **emotion-labeled dialogue datasets**  
-- Emotion-aware response generation for more natural conversations  
+* **Base Model:** GPT-2 Small (~124M parameters)
+* **Framework:** TensorFlow / Keras
+* **Training:** Fine-tuned on emotion-labeled dialogue datasets
+
+Example (loading model):
 
 ```python
 from transformers import GPT2Tokenizer, GPT2LMHeadModel
@@ -103,17 +172,23 @@ model = GPT2LMHeadModel.from_pretrained("gpt2")
 
 ---
 
-## Future Improvements
+## 🧩 Future Roadmap
 
-- Add advanced **emotion detection** for nuanced responses  
-- Voice input/output support  
-- Multi-language support  
-- Analytics on user emotions and conversations  
-- Deploy backend and model on a cloud server with GPU support  
+* 🔊 Voice chat integration
+* 🌍 Multilingual emotion support
+* ☁️ Deploy model to GPU cloud (Hugging Face / AWS / GCP)
+* 📊 Analytics dashboard for emotion stats
+* 🔒 OAuth login (Google/Facebook)
 
 ---
 
-## License
+## 🧾 License
 
 This project is licensed under the **MIT License**.
 
+---
+
+## 💡 Author
+
+**Ashmin Dungana**
+Built with ❤️ using Python, React, and GPT-2.

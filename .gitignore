@@ -3,8 +3,23 @@ __pycache__/
 *.py[codz]
 *$py.class
 
-venv/
-model/
+
+# Node / React
+frontend/node_modules
+frontend/build
+frontend/.env
+
+# Python / Backend
+backend/venv/
+backend/__pycache__/
+backend/.env
+
+# System / Editor
+.DS_Store
+.vscode/
+.idea/
+*.log
+
 
 # C extensions
 *.so
