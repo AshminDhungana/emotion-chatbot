@@ -4,6 +4,8 @@ from flask_cors import CORS
 from flask_jwt_extended import JWTManager
 from dotenv import load_dotenv
 import os
+from app.routes.chat_routes import chat_bp
+from app.routes.auth_routes import auth_bp
 
 from app.services.database import db
 
@@ -27,7 +29,8 @@ def create_app():
         return {"message": "pong"}
 
     # Import and register authentication routes
-    from app.routes.auth_routes import auth_bp
+    app.register_blueprint(chat_bp)
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
+    
 
     return app
