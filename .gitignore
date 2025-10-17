@@ -14,6 +14,22 @@ backend/venv/
 backend/__pycache__/
 backend/.env
 
+# Ignore trained models
+*.h5
+*.hdf5
+*.pkl
+*.joblib
+*.pt
+*.pth
+*.bin
+*.onnx
+
+# Hugging Face cache
+~/.cache/
+.cache/
+transformers/
+huggingface/
+
 # System / Editor
 .DS_Store
 .vscode/

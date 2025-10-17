@@ -1,6 +1,6 @@
 # 🤖 Emotion-Chatbot
 
-A web-based **Emotion Chatbot** that interacts with users while detecting and reflecting emotions in text. Users can either **log in** or chat anonymously. The chatbot runs on a **lightweight GPT-2 (124M)** model, fine-tuned for emotion-aware dialogue.
+A web-based **Emotion Chatbot** that interacts with users while detecting and reflecting emotions in text. Users can either **log in** or chat anonymously. The chatbot runs on a **Seq2Seq model, facebook/blenderbot-400M** model, fine-tuned for emotion-aware dialogue.
 
 ---
 
@@ -21,10 +21,10 @@ A web-based **Emotion Chatbot** that interacts with users while detecting and re
 | Layer                 | Technology                                              |
 | --------------------- | ------------------------------------------------------- |
 | **Frontend**          | React (Vite or Create React App), JavaScript, Bootstrap |
-| **Backend**           | Python (Flask / FastAPI)                                |
+| **Backend**           | Python (Flask)                                          |
 | **Database**          | SQLite                                                  |
-| **ML Model**          | TensorFlow / Keras (GPT-2 Small 124M)                   |
-| **API Communication** | REST (Fetch / Axios)                                    |
+| **ML Model**          | PyTorch (facebook/blenderbot-400M) & Emotion Classifier |
+| **API Communication** | REST                                                    |
 
 ---
 
@@ -33,8 +33,7 @@ A web-based **Emotion Chatbot** that interacts with users while detecting and re
 ```
 emotion-chatbot/
 │
-├── backend/                            # Flask backend
-│   ├── venv/                           # Python virtual environment
+├── backend/                            # Flask backend                           
 │   ├── app/
 │   │   ├── __init__.py
 │   │   ├── main.py                     # Entry point for backend
@@ -115,11 +114,7 @@ Run the backend:
 python run.py
 ```
 
-or (if using FastAPI)
 
-```bash
-uvicorn app.main:app --reload
-```
 
 ### ⚛️ 3. Frontend Setup (React)
 
@@ -157,20 +152,10 @@ The React app will open at **[http://localhost:3000](http://localhost:3000)**
 
 ## 🧠 Model Details
 
-* **Base Model:** GPT-2 Small (~124M parameters)
-* **Framework:** TensorFlow / Keras
+* **Base Model:** facebook/blenderbot-400M
+* **Classification Model:** DistilRoBERTa-based text classification model
+* **Framework:** Pytorch
 * **Training:** Fine-tuned on emotion-labeled dialogue datasets
-
-Example (loading model):
-
-```python
-from transformers import GPT2Tokenizer, GPT2LMHeadModel
-
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-model = GPT2LMHeadModel.from_pretrained("gpt2")
-```
-
----
 
 ## 🧩 Future Roadmap
 
@@ -191,4 +176,4 @@ This project is licensed under the **MIT License**.
 ## 💡 Author
 
 **Ashmin Dungana**
-Built with ❤️ using Python, React, and GPT-2.
+Built with ❤️ using Python, React, and Seq2Seq model
