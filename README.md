@@ -1,6 +1,6 @@
 # 🤖 Emotion-Chatbot
 
-A web-based **Emotion Chatbot** that interacts with users while detecting and reflecting emotions in text. Users can either **log in** or chat anonymously. The chatbot runs on a **Seq2Seq model, facebook/blenderbot-700M** model, fine-tuned for emotion-aware dialogue.
+A web-based **Emotion Chatbot** that interacts with users while detecting and reflecting emotions in text. Users can either **log in** or chat anonymously. The chatbot runs on a **Seq2Seq model, facebook/blenderbot-400M** model, fine-tuned for emotion-aware dialogue.
 
 ---
 
@@ -23,7 +23,7 @@ A web-based **Emotion Chatbot** that interacts with users while detecting and re
 | **Frontend**          | React (Vite or Create React App), JavaScript, Bootstrap |
 | **Backend**           | Python (Flask)                                          |
 | **Database**          | SQLite                                                  |
-| **ML Model**          | PyTorch (facebook/blenderbot-700M) & Emotion Classifier |
+| **ML Model**          | PyTorch (facebook/blenderbot-400M) & Emotion Classifier |
 | **API Communication** | REST                                                    |
 
 ---
