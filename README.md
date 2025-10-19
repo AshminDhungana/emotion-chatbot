@@ -20,7 +20,7 @@ A web-based **Emotion Chatbot** that interacts with users while detecting and re
 
 | Layer                 | Technology                                              |
 | --------------------- | ------------------------------------------------------- |
-| **Frontend**          | React (Vite or Create React App), JavaScript, Bootstrap |
+| **Frontend**          | React + Vite, JavaScript, Tailwind CSS                  |
 | **Backend**           | Python (Flask)                                          |
 | **Database**          | SQLite                                                  |
 | **ML Model**          | PyTorch (facebook/blenderbot-400M) & Emotion Classifier |
