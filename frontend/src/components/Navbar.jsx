@@ -1,8 +1,8 @@
 import { Settings, User, Brain } from "lucide-react";
 
-export default function Navbar() {
+export default function Navbar({ user }) {
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200 h-18">
+    <nav className="bg-white shadow-sm border-b border-gray-200 h-18 flex-shrink-0">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center h-16">
           <div className="flex items-center gap-3">
@@ -27,7 +27,7 @@ export default function Navbar() {
               <div className="w-7 h-7 bg-white rounded-full flex items-center justify-center">
                 <User size={16} className="text-indigo-600" />
               </div>
-              <span className="text-sm font-medium text-white hidden sm:inline">Ashmin</span>
+              <span className="text-sm font-medium text-white hidden sm:inline">{user.username}</span>
             </div>
           </div>
         </div>

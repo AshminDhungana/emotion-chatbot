@@ -1,74 +1,58 @@
 import { useState, useEffect, useRef } from "react";
 import MessageBubble from "./MessageBubble";
 import InputBox from "./InputBox";
+import { sendChatMessage } from "../services/api";
 
-export default function ChatWindow() {
-  const [messages, setMessages] = useState([
-    { 
-      id: 1,
-      text: "Hello Ashmin , how are you feeling today?", 
-      sender: "bot",
-      timestamp: new Date().toLocaleTimeString('en-US', { 
-        hour: 'numeric', 
-        minute: '2-digit' 
-      })
-    },
-  ]);
+export default function ChatWindow({ user }) {
+  const [messages, setMessages] = useState([]);
   const [isTyping, setIsTyping] = useState(false);
   const chatEndRef = useRef(null);
 
-  const handleSend = (msg) => {
+  useEffect(() => {
+    const username = user?.username || "Guest";
+    setMessages([{
+      id: 1,
+      text: `Hello ${username}, how are you feeling today?`,
+      sender: "bot",
+      timestamp: new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }),
+    }]);
+  }, [user]);
+
+  const handleSend = async (msg) => {
     if (!msg.trim()) return;
 
-    // Add user message
-    const userMsg = { 
+    const userMsg = {
       id: Date.now(),
-      text: msg, 
+      text: msg,
       sender: "user",
-      timestamp: new Date().toLocaleTimeString('en-US', { 
-        hour: 'numeric', 
-        minute: '2-digit' 
-      })
+      timestamp: new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }),
     };
-    
-    setMessages((prev) => [...prev, userMsg]);
+    setMessages(prev => [...prev, userMsg]);
     setIsTyping(true);
 
-    // Simulate bot response delay
-    setTimeout(() => {
-      const botMsg = { 
-        id: Date.now() + 1,
-        text: "I'm analyzing your emotion... 💭", 
-        sender: "bot",
-        timestamp: new Date().toLocaleTimeString('en-US', { 
-          hour: 'numeric', 
-          minute: '2-digit' 
-        })
-      };
-      setMessages((prev) => [...prev, botMsg]);
-      setIsTyping(false);
-    }, 1000);
+    const token = user?.token || null;
+    const res = await sendChatMessage(msg, token);
+
+    const botMsg = {
+      id: Date.now() + 1,
+      text: res.success ? res.data.reply : `Error: ${res.error}`,
+      sender: "bot",
+      timestamp: new Date().toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" }),
+    };
+    setMessages(prev => [...prev, botMsg]);
+    setIsTyping(false);
   };
 
-  // Auto-scroll to bottom when messages change
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, isTyping]);
 
   return (
     <div className="flex flex-col h-full bg-white rounded-xl shadow-lg overflow-hidden">
-
       <div className="flex-grow overflow-y-auto p-6">
-        {messages.map((msg) => (
-          <MessageBubble 
-            key={msg.id} 
-            text={msg.text} 
-            sender={msg.sender}
-            timestamp={msg.timestamp}
-          />
+        {messages.map(msg => (
+          <MessageBubble key={msg.id} {...msg} />
         ))}
-        
-
         {isTyping && (
           <div className="flex items-center gap-2 text-gray-500 text-sm ml-2 mb-4">
             <div className="flex gap-1">
@@ -78,7 +62,6 @@ export default function ChatWindow() {
             </div>
           </div>
         )}
-        
         <div ref={chatEndRef} />
       </div>
 

@@ -8,21 +8,19 @@ export default function InputBox({ onSend, disabled = false, placeholder = "Type
 
   const handleSend = () => {
     if (message.trim() && !disabled) {
-      onSend(message);
-      setMessage("");
+      onSend(message);        // Pass message to ChatWindow
+      setMessage("");         // Clear input
       inputRef.current?.focus();
     }
   };
 
   const handleKeyDown = (e) => {
-    // Send on Enter, allow Shift+Enter for new line
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSend();
     }
   };
 
-  // Auto-focus input on mount
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
@@ -39,7 +37,6 @@ export default function InputBox({ onSend, disabled = false, placeholder = "Type
             : 'ring-1 ring-gray-300 shadow-sm'
         } ${disabled ? 'opacity-60 cursor-not-allowed' : ''}`}
       >
-
         <button
           type="button"
           disabled={disabled}
@@ -48,7 +45,6 @@ export default function InputBox({ onSend, disabled = false, placeholder = "Type
         >
           <Smile size={20} />
         </button>
-
 
         <input
           ref={inputRef}
@@ -64,13 +60,11 @@ export default function InputBox({ onSend, disabled = false, placeholder = "Type
           maxLength={500}
         />
 
- 
         {message.length > 400 && (
           <span className="text-xs text-gray-400 whitespace-nowrap">
             {message.length}/500
           </span>
         )}
-
 
         <button
           type="button"
@@ -80,7 +74,6 @@ export default function InputBox({ onSend, disabled = false, placeholder = "Type
         >
           <Paperclip size={20} />
         </button>
-
 
         <button
           onClick={handleSend}
