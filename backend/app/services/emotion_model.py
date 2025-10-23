@@ -52,7 +52,7 @@ class EmotionModel:
                 "text-classification",
                 model=emotion_model_name,
                 framework="pt",
-                return_all_scores=False,
+                top_k=1,
                 device=0 if torch.cuda.is_available() else -1
             )
             logging.info(f"Loaded emotion model: {emotion_model_name}")
