@@ -25,7 +25,7 @@ export const guestLogin = () => {
 // Chat API
 export const sendChatMessage = async (message, token = null) => {
   try {
-    const res = await fetch(`${API_BASE}/chat/api/chat`, {
+    const res = await fetch(`${API_BASE}/api/chat`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
