@@ -5,35 +5,82 @@ import RegisterPage from "./pages/RegisterPage";
 import ChatPage from "./pages/ChatPage";
 import { loginUser, guestLogin } from "./services/api";
 
-function App() {
-  const [user, setUser] = useState(() => {
-    const stored = localStorage.getItem("user");
-    return stored ? JSON.parse(stored) : null;
-  });
-
+// Guest Page Component (was missing in your code)
+function GuestPage({ onGuestLogin }) {
+  const navigate = useNavigate();
+  
   useEffect(() => {
-  const stored = localStorage.getItem("user");
-  if (stored) {
-    const userData = JSON.parse(stored);
-    if (userData.role === "guest") {
+    onGuestLogin();
+    navigate('/chat');
+  }, [onGuestLogin, navigate]);
+  
+  return <div>Loading guest session...</div>;
+}
+
+function App() {
+  const [user, setUser] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Check localStorage on mount
+  useEffect(() => {
+    const stored = localStorage.getItem("user");
+    console.log("Stored user data:", stored); // Debug log
+    
+    if (stored) {
+      try {
+        const userData = JSON.parse(stored);
+        console.log("Parsed user data:", userData); // Debug log
+        
+        // Don't persist guest users
+        if (userData.role !== "guest") {
+          setUser(userData);
+        } else {
+          console.log("Removing guest user from localStorage");
+          localStorage.removeItem("user");
+        }
+      } catch (error) {
+        console.error("Error parsing stored user:", error);
+        localStorage.removeItem("user");
+      }
+    } else {
+      console.log("No stored user found");
+    }
+    setIsLoading(false);
+  }, []);
+
+  // Sync user to localStorage when it changes
+  useEffect(() => {
+    if (user && user.role !== "guest") {
+      localStorage.setItem("user", JSON.stringify(user));
+    } else if (!user) {
       localStorage.removeItem("user");
     }
-  }
-}, []);
-
-  useEffect(() => {
-    if (user) localStorage.setItem("user", JSON.stringify(user));
   }, [user]);
 
   const handleLogin = async (email, password) => {
-    const res = await loginUser(email, password);
-    if (res.success) setUser(res.data.user);
-    return res;
+    try {
+      const res = await loginUser(email, password);
+      if (res.success) {
+        setUser(res.data.user);
+      }
+      return res;
+    } catch (error) {
+      console.error("Login error:", error);
+      return { success: false, error: error.message };
+    }
   };
 
   const handleGuest = () => {
-    const res = guestLogin();
-    if (res.success) setUser(res.data.user);
+    try {
+      const res = guestLogin();
+      if (res.success) {
+        setUser(res.data.user);
+      }
+      return res;
+    } catch (error) {
+      console.error("Guest login error:", error);
+      return { success: false, error: error.message };
+    }
   };
 
   const handleLogout = () => {
@@ -41,32 +88,43 @@ function App() {
     localStorage.removeItem("user");
   };
 
-  if (!user) {
+  // Navigation wrapper components to use navigate hook properly
+  function LoginPageWrapper() {
+    const navigate = useNavigate();
     return (
-      <Router>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <LoginPage
-                onLogin={handleLogin}
-                onGuest={handleGuest}
-                onRegister={() => (window.location.href = "/register")}
-              />
-            }
-          />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Router>
+      <LoginPage
+        onLogin={handleLogin}
+        onGuest={() => navigate("/guest")}
+        onRegister={() => navigate("/register")}
+      />
     );
+  }
+
+  function RegisterPageWrapper() {
+    const navigate = useNavigate();
+    return <RegisterPage onRegister={handleLogin} />;
+  }
+
+  if (isLoading) {
+    return <div>Loading...</div>;
   }
 
   return (
     <Router>
       <Routes>
-        <Route path="/chat" element={<ChatPage user={user} onLogout={handleLogout} />} />
-        <Route path="*" element={<Navigate to="/chat" />} />
+        {!user ? (
+          <>
+            <Route path="/" element={<LoginPageWrapper />} />
+            <Route path="/guest" element={<GuestPage onGuestLogin={handleGuest} />} />
+            <Route path="/register" element={<RegisterPageWrapper />} />
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </>
+        ) : (
+          <>
+            <Route path="/chat" element={<ChatPage user={user} onLogout={handleLogout} />} />
+            <Route path="*" element={<Navigate to="/chat" replace />} />
+          </>
+        )}
       </Routes>
     </Router>
   );
